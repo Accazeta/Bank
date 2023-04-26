@@ -23,5 +23,9 @@ public class ATM implements Visitor<Object>{
 	public String visit(Bank bank) {
 		return null;
 	}
+	
+	public static void main(String[] args) {
+		
+	}
 
 }

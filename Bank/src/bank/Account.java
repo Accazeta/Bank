@@ -2,9 +2,9 @@ package bank;
 
 public class Account extends Bank{
 	public static int a_id = 0;
-	private int id;
-	private double balance;
-	private double max_withdrawal;
+	protected final int id;
+	protected double balance;
+	protected double max_withdrawal;
 	
 	public Account() {
 		super();
@@ -24,4 +24,39 @@ public class Account extends Bank{
 	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	// balance can be negative
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public double getMax_withdrawal() {
+		return max_withdrawal;
+	}
+
+	public void setMax_withdrawal(double max_withdrawal) {
+		if(max_withdrawal > (this.getBalance()*0.1)) {
+			System.out.println("Max withdrawal to high, maximum value allowed is 10% of the current balance");
+			System.out.println("Max withdrawal not updated");
+		}
+		else {
+			this.max_withdrawal = max_withdrawal;
+		}
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", balance=" + balance + ", max_withdrawal=" + max_withdrawal + "]";
+	}
+	
+	
 }
