@@ -1,7 +1,7 @@
 package bank;
 
 public class DepositAccount extends Account{
-	private double interest;
+	protected double interest;
 	
 	public DepositAccount() {
 		super();
@@ -59,7 +59,7 @@ public class DepositAccount extends Account{
 
 	@Override
 	public String toString() {
-		return "DepositAccount [interest=" + interest + ", id=" + id + "]";
+		return id + "Conto Deposito - saldo = " + balance + ", interesse = " + this.interest*100 + "%";
 	}
 	
 	
