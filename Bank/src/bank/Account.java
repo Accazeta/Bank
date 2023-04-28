@@ -55,7 +55,7 @@ public class Account extends Bank{
 	
 	@Override
 	public String toString() {
-		return id + "Conto Corrente - saldo = " + balance;
+		return id + " Conto Corrente - saldo = " + balance;
 	}
 	
 	
