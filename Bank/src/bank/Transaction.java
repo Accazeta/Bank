@@ -1,14 +1,15 @@
 package bank;
 
 public class Transaction extends Bank{
-	Customer source;
-	Customer destination;
+	Account source;
+	Account destination;
 	Double amount;
 	
-	public Transaction(Customer source, Customer destination, Double amount) {
+	public Transaction(Account source, Account destination, Double amount, Bank b) {
 		this.source = source;
 		this.destination = destination;
 		this.amount = amount;
+		b.addTransaction(this);
 	}
 	
 	@Override

@@ -6,18 +6,20 @@ public class Account extends Bank{
 	protected double balance;
 	protected double max_withdrawal;
 	
-	public Account() {
+	public Account(Bank b) {
 		super();
 		this.id = ++a_id;
 		this.balance = 0;
 		this.max_withdrawal = 1000;
+		b.addConto(this);
 	}
 	
-	public Account(double balance) {
+	public Account(double balance, Bank b) {
 		super();
 		this.id = ++a_id;
 		this.balance = balance;
 		this.max_withdrawal = balance * 0.1;
+		b.addConto(this);
 	}
 	
 	@Override
@@ -56,6 +58,10 @@ public class Account extends Bank{
 	@Override
 	public String toString() {
 		return id + " Conto Corrente - saldo = " + balance;
+	}
+	
+	public Boolean equals(Account a) {
+		return (this.id == a.id);
 	}
 	
 	

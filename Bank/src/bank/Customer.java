@@ -7,24 +7,29 @@ public class Customer extends Bank{
 	private final int id;
 	private String name;
 	private String surname;
-	private ArrayList<Account> conti;
+	private ArrayList<Account> conti_personali;
+	private ArrayList<Transaction> movimenti;
 	
-	public Customer() {
+	public Customer(Bank b) {
 		super();
 		this.name = "";
 		this.surname = "";
 		this.id = ++c_id;
-		this.conti = new ArrayList<Account>();
-		this.conti.add(new Account());
+		this.conti_personali = new ArrayList<Account>();
+		this.conti_personali.add(new Account(b));
+		b.addCustomer(this);
+		this.movimenti = new ArrayList<Transaction>();
 	}
 	
-	public Customer(String name, String surname) {
+	public Customer(String name, String surname, Bank b) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.id = ++c_id;
-		this.conti = new ArrayList<Account>();
-		this.conti.add(new Account());
+		this.conti_personali = new ArrayList<Account>();
+		this.conti_personali.add(new Account(b));
+		b.addCustomer(this);
+		this.movimenti = new ArrayList<Transaction>();
 	}
 	
 	@Override
@@ -53,7 +58,19 @@ public class Customer extends Bank{
 	}
 	
 	public ArrayList<Account> getConti() {
-		return this.conti;
+		return this.conti_personali;
+	}
+	
+	public Account getSingleConto(int id) {
+		return this.conti_personali.get(id);
+	}
+	
+	public ArrayList<Transaction> getTransactions() {
+		return this.movimenti;
+	}
+	
+	public void addTransaction(Transaction t) {
+		this.movimenti.add(t);
 	}
 
 	@Override

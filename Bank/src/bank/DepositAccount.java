@@ -3,14 +3,16 @@ package bank;
 public class DepositAccount extends Account{
 	protected double interest;
 	
-	public DepositAccount() {
-		super();
+	public DepositAccount(Bank b) {
+		super(b);
 		this.interest = 0.03;
+		b.addConto(this);
 	}
 	
-	public DepositAccount(double balance, double interest) {
-		super(balance);
+	public DepositAccount(double balance, double interest, Bank b) {
+		super(balance, b);
 		this.interest = interest;
+		b.addConto(this);
 	}
 	
 	@Override
