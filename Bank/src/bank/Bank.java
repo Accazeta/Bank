@@ -7,12 +7,14 @@ public class Bank implements Visitable{
 	public final double codiceFiscale;
 	private ArrayList<Customer> clients;
 	private ArrayList<Transaction> movimenti;
+	private ArrayList<Account> contiAperti;
 	
 	Bank() {
 		this.nome = "Banca di Bergamo";
 		this.codiceFiscale = (int) ((Math.random() * (9999999 - 1000000)) + 1000000);
 		this.clients = new ArrayList<Customer>();
 		this.movimenti = new ArrayList<Transaction>();
+		this.contiAperti = new ArrayList<Account>();
 	}
 	
 	@Override
@@ -29,8 +31,42 @@ public class Bank implements Visitable{
 		this.clients.add(c);
 	}
 	
+	public ArrayList<Customer> getCustomers() {
+		return this.clients;
+	}
+	
 	public void addTransaction(Transaction t) {
 		this.movimenti.add(t);
 	}
+	
+	public void addConto(Account a) {
+		this.contiAperti.add(a);
+	}
+	
+	public ArrayList<Account> getConti() {
+		return this.contiAperti;
+	}
+	
+	public Account getSingleConto(int id) {
+		return this.contiAperti.get(id);
+	}
+	
+	public Customer getSingleCustomer(int id) {
+		return this.clients.get(id);
+	}
+	
+	public Customer findOwnerGivenAccount(Account a) {
+		for(Customer c : this.getCustomers()) {
+			for(Account temp : c.getConti()) {
+				if(temp.equals(a)) {
+					return c;
+				}
+			}
+		}
+		return null;
+	}
 
+	public Boolean equals(Bank b) {
+		return (this.nome.equals(b.nome) && this.codiceFiscale == b.codiceFiscale);
+	}
 }
