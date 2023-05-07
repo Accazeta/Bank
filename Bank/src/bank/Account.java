@@ -42,7 +42,7 @@ public class Account extends Bank{
 
 	public void setMax_withdrawal(double max_withdrawal) {
 		if(max_withdrawal > (this.getBalance()*0.1)) {
-			System.out.println("Max withdrawal to high, maximum value allowed is 10% of the current balance");
+			System.out.println("Max withdrawal too high, maximum value allowed is 10% of the current balance");
 			System.out.println("Max withdrawal not updated");
 		}
 		else {
@@ -57,7 +57,7 @@ public class Account extends Bank{
 	
 	@Override
 	public String toString() {
-		return id + " Conto Corrente - saldo = " + balance;
+		return "[ " + id + " ]" + " Conto Corrente - saldo = " + balance;
 	}
 	
 	public Boolean equals(Account a) {

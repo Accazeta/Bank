@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Bank implements Visitable{
 	public final String nome;
-	public final double codiceFiscale;
+	public final long codiceFiscale;
 	private ArrayList<Customer> clients;
 	private ArrayList<Transaction> movimenti;
 	private ArrayList<Account> contiAperti;
@@ -27,20 +27,26 @@ public class Bank implements Visitable{
 		return this.nome;
 	}
 	
-	public void addCustomer(Customer c) {
-		this.clients.add(c);
+	public void addCustomer(Customer... args) {
+		for(Customer c : args) {
+			this.clients.add(c);
+		}
 	}
 	
 	public ArrayList<Customer> getCustomers() {
 		return this.clients;
 	}
 	
-	public void addTransaction(Transaction t) {
-		this.movimenti.add(t);
+	public void addTransaction(Transaction... args) {
+		for(Transaction t : args) {
+			this.movimenti.add(t);
+		}
 	}
 	
-	public void addConto(Account a) {
-		this.contiAperti.add(a);
+	public void addConto(Account... args) {
+		for(Account a : args) {
+			this.contiAperti.add(a);
+		}
 	}
 	
 	public ArrayList<Account> getConti() {

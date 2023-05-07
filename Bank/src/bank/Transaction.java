@@ -1,5 +1,21 @@
 package bank;
 
+public record Transaction(Account source, Account destination, Double amount, Bank b) implements Visitable{
+	public Transaction {
+		b.addTransaction(this);
+	}
+
+	@Override
+	public <T> T accept(Visitor<T> v) {
+		return v.visit(this);
+	}
+}
+
+
+
+
+
+/*
 public class Transaction extends Bank{
 	Account source;
 	Account destination;
@@ -17,3 +33,4 @@ public class Transaction extends Bank{
 		return v.visit(this);
 	}
 }
+*/

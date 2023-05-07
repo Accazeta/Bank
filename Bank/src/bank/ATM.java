@@ -26,7 +26,7 @@ public class ATM implements Visitor<Object> {
 
 	@Override
 	public Double visit(Transaction tr) {
-		return tr.amount;
+		return tr.amount();
 	}
 
 	public static String inputATM(String testo, String opzioniValide[]) {
@@ -94,7 +94,7 @@ public class ATM implements Visitor<Object> {
 		String s = "";
 
 		try {
-			/*
+			
 			System.out.println("Attesa tessera...");
 			Thread.sleep(1000);
 			System.out.println("...");
