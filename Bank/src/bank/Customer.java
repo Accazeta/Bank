@@ -72,7 +72,20 @@ public class Customer extends Bank{
 	public void addTransaction(Transaction t) {
 		this.movimenti.add(t);
 	}
+	
+	public void addConto(Account c) {
+		this.conti_personali.add(c);
+	}
 
+	public Account getConto(int id) {
+		for (Account c : this.getConti()) {
+			if(c.getId() == id) {
+				return c;
+			}
+		}
+		return null;
+	}	
+	
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", name=" + name + ", surname=" + surname + "]";

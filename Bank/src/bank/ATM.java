@@ -16,7 +16,7 @@ public class ATM implements Visitor<Object> {
 
 	@Override
 	public Double visit(DepositAccount da) {
-		return da.interest;
+		return da.balance;
 	}
 
 	@Override
@@ -58,11 +58,11 @@ public class ATM implements Visitor<Object> {
 			Double value = Double.parseDouble(s_value);
 			if (value < min || value > Math.min(conto.max_withdrawal, conto.balance)) {
 				if ((Double) (conto.accept(new ATM())) < 10 && value != 0) {
-					System.out.println("Fondi insufficienti");
+					System.out.print("Fondi insufficienti");
 				} else {
 					if (value != 0) {
 						System.out.println("Attenzione, " + value + " non è un valore valido");
-						System.out.println("L'intervallo ammesso è: [" + min + ", "
+						System.out.print("L'intervallo ammesso è: [" + min + ", "
 								+ Math.min(conto.max_withdrawal, (Double) (conto.accept(new ATM()))) + "]");
 					} else {
 						System.out.println();
@@ -83,18 +83,25 @@ public class ATM implements Visitor<Object> {
 
 	}
 
+	public static void exit() {
+		System.out.println("Uscita...");
+		System.out.println("Arrivederci.");
+	}
+	
 	public static void main(String[] args) {
 		Bank my_bank = new Bank();
 		Customer utente = new Customer("Federico", "Panzeri", my_bank);
 		Customer utente2 = new Customer("Acram", "Bousaid", my_bank);
-		//my_bank.addCustomer(utente);
-		//my_bank.addConto(utente.getConti().get(utente.getConti().size() - 1));
+		// Non aggiungo manualmente gli utenti nella banca perchè viene fatto
+		// automaticamente nel loro costruttore
+		// Inoltre il costruttore di Customer aggiunge in automatico un nuovo conto
+		// corrente vuoto
 
 		Scanner in = new Scanner(System.in);
 		String s = "";
 
-		try {
-			
+		try {	
+			/*
 			System.out.println("Attesa tessera...");
 			Thread.sleep(1000);
 			System.out.println("...");
@@ -108,13 +115,13 @@ public class ATM implements Visitor<Object> {
 				System.out.print("Inserire PIN: ");
 				s = in.nextLine();
 				if (s.equals("1234")) {
-					System.out.print("Benvenuto " + utente.getName()+". ");
+					System.out.print("Benvenuto " + utente.getName() + ". ");
 					pin = true;
 				} else {
 					System.out.println("Pin errato!");
 					pin = false;
-				} 
-			}//*/
+				}
+			} // */
 			while (!s.equals("0")) {
 				System.out.println("Operazioni disponibili: ");
 				System.out.println(Constants.ANSI_PINK + "1 - Preleva" + Constants.ANSI_RESET);
@@ -133,10 +140,11 @@ public class ATM implements Visitor<Object> {
 						boolean flag = false; // flag usato per deteminare se l'operazione è andata a buon fine
 						System.out.println(Constants.ANSI_PINK + "\nSelezionare il conto: ");
 						String opzValide[] = new String[utente.getConti().size() + 1];
-						for (Account conto : utente.getConti()) {
-							System.out.println(conto.toString());
-							opzValide[conto.getId() - 1] = String.valueOf(conto.getId());
+						for(int i = 0; i<utente.getConti().size(); i++) {
+							System.out.println(utente.getConti().get(i).toString());
+							opzValide[i] = String.valueOf(utente.getConti().get(i).getId());
 						}
+						
 						opzValide[opzValide.length - 1] = "0"; // Add zero to valid options
 						System.out.println(Constants.ANSI_RESET + "---------------------------------");
 						s = inputATM("(0 per uscire) Valore: ", opzValide);
@@ -144,10 +152,11 @@ public class ATM implements Visitor<Object> {
 							continue;
 						}
 						if (s.equals("0")) {
+							exit();
 							break;
 						} else {
-							final int accountNumber = Integer.valueOf(s) - 1;
-							Account conto = utente.getConti().get(accountNumber);
+							final int accountNumber = Integer.valueOf(s);
+							Account conto = utente.getConto(accountNumber);
 							while (!s.equals("0")) {
 								System.out.println(Constants.ANSI_PINK
 										+ "\nInserisci l'importo da prelevare (usa il punto per i decimali)");
@@ -157,14 +166,15 @@ public class ATM implements Visitor<Object> {
 									continue;
 								}
 								if (s.equals("0")) {
+									exit();
 									break;
 								} else {
-									utente.getConti().get(accountNumber).balance -= Double.parseDouble(s);
+									utente.getConto(accountNumber).balance -= Double.parseDouble(s);
 									my_bank.findOwnerGivenAccount(conto)
-											.addTransaction(new Transaction(utente.getConti().get(accountNumber),
-													utente.getConti().get(accountNumber), 0 - Double.parseDouble(s),
+											.addTransaction(new Transaction(utente.getConto(accountNumber),
+													utente.getConto(accountNumber), 0 - Double.parseDouble(s),
 													my_bank));
-									System.out.println("Hai prelevato " + s + "!");
+									System.out.println(Constants.ANSI_PINK+"Hai prelevato " + s + "!\n" + Constants.ANSI_RESET);
 									flag = true;
 									break;
 								}
@@ -181,9 +191,9 @@ public class ATM implements Visitor<Object> {
 						boolean flag = false;
 						System.out.println(Constants.ANSI_GREEN + "\nSelezionare il conto: ");
 						String opzValide[] = new String[utente.getConti().size() + 1];
-						for (Account conto : utente.getConti()) {
-							System.out.println(conto.toString());
-							opzValide[conto.getId() - 1] = String.valueOf(conto.getId());
+						for(int i = 0; i<utente.getConti().size(); i++) {
+							System.out.println(utente.getConti().get(i).toString());
+							opzValide[i] = String.valueOf(utente.getConti().get(i).getId());
 						}
 						opzValide[opzValide.length - 1] = "0"; // Add zero to valid options
 						System.out.println(Constants.ANSI_RESET + "---------------------------------");
@@ -192,10 +202,11 @@ public class ATM implements Visitor<Object> {
 							continue;
 						}
 						if (s.equals("0")) {
+							exit();
 							break;
 						} else {
-							final int accountNumber = Integer.valueOf(s) - 1;
-							Account conto = utente.getConti().get(accountNumber);
+							final int accountNumber = Integer.valueOf(s);
+							Account conto = utente.getConto(accountNumber);
 							while (!s.equals("0")) {
 								System.out.println(Constants.ANSI_GREEN
 										+ "\nInserisci l'importo da depositare (usa il punto per i decimali)"
@@ -224,10 +235,10 @@ public class ATM implements Visitor<Object> {
 								} else { // Porto a termine l'operazione
 									my_bank.getSingleConto(accountNumber).balance += value;
 									my_bank.findOwnerGivenAccount(conto)
-											.addTransaction(new Transaction(utente.getConti().get(accountNumber),
-													utente.getConti().get(accountNumber), value, my_bank));
+											.addTransaction(new Transaction(utente.getConto(accountNumber),
+													utente.getConto(accountNumber), value, my_bank));
 									System.out.println(Constants.ANSI_GREEN + "\nHai depositato " + value + "!"
-											+ Constants.ANSI_RESET);
+											+ Constants.ANSI_RESET+"\n");
 									flag = true; // flag usato per determinare se l'operazione è andata a buon fine
 									break;
 								}
@@ -243,10 +254,10 @@ public class ATM implements Visitor<Object> {
 					while (!s.equals("0")) {
 						boolean flag = false; // flag usato per deteminare se l'operazione è andata a buon fine
 						System.out.println(Constants.ANSI_PURPLE + "\nSelezionare il conto di origine: ");
-						String opzValide[] = new String[utente.getConti().size() + 1];
-						for (Account conto : utente.getConti()) {
-							System.out.println(conto.toString());
-							opzValide[conto.getId() - 1] = String.valueOf(conto.getId());
+						String opzValide[] = new String[utente.getConti().size() + 1]; // +1 per l'opzione zero
+						for(int i = 0; i<utente.getConti().size(); i++) {
+							System.out.println(utente.getConti().get(i).toString());
+							opzValide[i] = String.valueOf(utente.getConti().get(i).getId());
 						}
 						opzValide[opzValide.length - 1] = "0"; // Add zero to valid options
 						System.out.println(Constants.ANSI_RESET + "---------------------------------");
@@ -257,8 +268,8 @@ public class ATM implements Visitor<Object> {
 						if (s.equals("0")) {
 							break;
 						} else {
-							final int accountNumber = Integer.valueOf(s) - 1;
-							Account conto = utente.getConti().get(accountNumber);
+							final int accountNumber = Integer.valueOf(s);
+							Account conto = utente.getConto(accountNumber);
 							while (!s.equals("0")) {
 								System.out.println(Constants.ANSI_PURPLE
 										+ "\nInserisci l'importo da inviare (usa il punto per i decimali)");
@@ -298,10 +309,12 @@ public class ATM implements Visitor<Object> {
 											my_bank.getSingleConto(Integer.parseInt(s) - 1).balance += importo;
 											my_bank.findOwnerGivenAccount(conto).addTransaction(new Transaction(
 													my_bank.getSingleConto(accountNumber),
-													my_bank.getSingleConto(Integer.parseInt(s)-1), importo, my_bank));
+													my_bank.getSingleConto(Integer.parseInt(s) - 1), importo, my_bank));
 											System.out.println("Bonifico da " + utente.getName() + " a "
 													+ my_bank.getCustomers()
-															.get(my_bank.getSingleConto(Integer.parseInt(s)-1).getId()-1).getName()
+															.get(my_bank.getSingleConto(Integer.parseInt(s) - 1).getId()
+																	- 1)
+															.getName()
 													+ " di importo " + importo + " effettuato!");
 											flag = true;
 											break;
@@ -319,21 +332,35 @@ public class ATM implements Visitor<Object> {
 					break; // exit case
 				}
 				case "4": {
-					System.out.print(Constants.ANSI_RED+"Vuoi aprire un conto deposito? [y/n]: " );
+					System.out.print(Constants.ANSI_RED + "Vuoi aprire un conto deposito? [y/n]: ");
 					Scanner scan = new Scanner(System.in);
 					String answer = scan.nextLine();
-					if(answer.toLowerCase().equals("y")) {
+					if (answer.toLowerCase().equals("y")) {
 						DepositAccount temp = new DepositAccount(my_bank);
-						my_bank.getSingleCustomer(0).addConto(temp);
+						utente.addConto(temp);
 						System.out.println("Il nuovo conto è stato aperto!");
-						System.out.println("Il tasso di interesse è " + (Double) temp.accept(new ATM()) * 100 + "% lordo" + Constants.ANSI_RESET);
-					}
-					else {
-						System.out.println(Constants.ANSI_RED+"Nessun conto deposito è stato aperto"+Constants.ANSI_RESET);
+						System.out.println("Il tasso di interesse è " + (Double) temp.accept(new ATM()) * 100
+								+ "% lordo" + Constants.ANSI_RESET);
+					} else {
+						System.out.println(
+								Constants.ANSI_RED + "Nessun conto deposito è stato aperto" + Constants.ANSI_RESET);
 					}
 					break;
 				}
 				case "5": {
+					System.out.println(Constants.ANSI_YELLOW+"-----" + my_bank.nome + "-----");
+					System.out.println("Profilo di " + utente.getName() + " " + utente.getSurname());
+					System.out.println("Conti attualmente aperti: ");
+					for(Account a : utente.getConti()) {
+						System.out.println(a.toString());
+					}
+					System.out.print("Totale somme depositate: ");
+					double somma = 0.0;
+					for(Account a : utente.getConti()) {
+						somma += (Double) a.accept(new ATM());
+					}
+					System.out.println(somma + "!" + Constants.ANSI_RESET);
+					System.out.println();
 					break;
 				}
 				case "0": {
@@ -352,8 +379,14 @@ public class ATM implements Visitor<Object> {
 						System.out.println("...");
 						Thread.sleep(1000);
 						System.out.println("Arrivederci");
-						break;
 					}
+					else {
+						System.out.println("Valore errato. Uscita...");
+						Thread.sleep(1000);
+						System.out.println("Arrivederci");
+						s = "0";
+					}
+					break;
 				}
 				default:
 					System.out.println("Input errato. Ricarico... ");

@@ -54,11 +54,21 @@ public class Bank implements Visitable{
 	}
 	
 	public Account getSingleConto(int id) {
-		return this.contiAperti.get(id);
+		for(Account c : this.getConti()) {
+			if(c.id == id) {
+				return c;
+			}
+		}
+		return null;
 	}
 	
 	public Customer getSingleCustomer(int id) {
-		return this.clients.get(id);
+		for(Customer c : this.clients) {
+			if(c.getId() == id) {
+				return c;
+			}
+		}
+		return null;
 	}
 	
 	public Customer findOwnerGivenAccount(Account a) {

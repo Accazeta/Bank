@@ -6,7 +6,8 @@ public class DepositAccount extends Account{
 	public DepositAccount(Bank b) {
 		super(b);
 		this.interest = 0.03;
-		b.addConto(this);
+		// Non c'è bisogno di aggiungere il conto appena creato alla banca, perchè questa operazione
+		// avviene invocando super()
 	}
 	
 	public DepositAccount(double balance, double interest, Bank b) {
@@ -61,7 +62,7 @@ public class DepositAccount extends Account{
 
 	@Override
 	public String toString() {
-		return id + "Conto Deposito - saldo = " + balance + ", interesse = " + this.interest*100 + "%";
+		return "[ " + id + " ] Conto Deposito - saldo = " + balance + ", interesse = " + this.interest*100 + "%";
 	}
 	
 	
