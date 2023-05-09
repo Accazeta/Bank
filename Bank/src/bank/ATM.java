@@ -87,7 +87,7 @@ public class ATM implements Visitor<Object> {
 		System.out.println("Uscita...");
 		System.out.println("Arrivederci.");
 	}
-	
+
 	public static void main(String[] args) {
 		Bank my_bank = new Bank();
 		Customer utente = new Customer("Federico", "Panzeri", my_bank);
@@ -100,28 +100,16 @@ public class ATM implements Visitor<Object> {
 		Scanner in = new Scanner(System.in);
 		String s = "";
 
-		try {	
+		try {
 			/*
-			System.out.println("Attesa tessera...");
-			Thread.sleep(1000);
-			System.out.println("...");
-			Thread.sleep(1000);
-			System.out.println("...");
-			Thread.sleep(1000);
-			System.out.println("...");
-			Thread.sleep(1000);
-			Boolean pin = false;
-			while (!pin) {
-				System.out.print("Inserire PIN: ");
-				s = in.nextLine();
-				if (s.equals("1234")) {
-					System.out.print("Benvenuto " + utente.getName() + ". ");
-					pin = true;
-				} else {
-					System.out.println("Pin errato!");
-					pin = false;
-				}
-			} // */
+			 * System.out.println("Attesa tessera..."); Thread.sleep(1000);
+			 * System.out.println("..."); Thread.sleep(1000); System.out.println("...");
+			 * Thread.sleep(1000); System.out.println("..."); Thread.sleep(1000); Boolean
+			 * pin = false; while (!pin) { System.out.print("Inserire PIN: "); s =
+			 * in.nextLine(); if (s.equals("1234")) { System.out.print("Benvenuto " +
+			 * utente.getName() + ". "); pin = true; } else {
+			 * System.out.println("Pin errato!"); pin = false; } } //
+			 */
 			while (!s.equals("0")) {
 				System.out.println("Operazioni disponibili: ");
 				System.out.println(Constants.ANSI_PINK + "1 - Preleva" + Constants.ANSI_RESET);
@@ -140,11 +128,11 @@ public class ATM implements Visitor<Object> {
 						boolean flag = false; // flag usato per deteminare se l'operazione è andata a buon fine
 						System.out.println(Constants.ANSI_PINK + "\nSelezionare il conto: ");
 						String opzValide[] = new String[utente.getConti().size() + 1];
-						for(int i = 0; i<utente.getConti().size(); i++) {
+						for (int i = 0; i < utente.getConti().size(); i++) {
 							System.out.println(utente.getConti().get(i).toString());
 							opzValide[i] = String.valueOf(utente.getConti().get(i).getId());
 						}
-						
+
 						opzValide[opzValide.length - 1] = "0"; // Add zero to valid options
 						System.out.println(Constants.ANSI_RESET + "---------------------------------");
 						s = inputATM("(0 per uscire) Valore: ", opzValide);
@@ -174,7 +162,8 @@ public class ATM implements Visitor<Object> {
 											.addTransaction(new Transaction(utente.getConto(accountNumber),
 													utente.getConto(accountNumber), 0 - Double.parseDouble(s),
 													my_bank));
-									System.out.println(Constants.ANSI_PINK+"Hai prelevato " + s + "!\n" + Constants.ANSI_RESET);
+									System.out.println(
+											Constants.ANSI_PINK + "Hai prelevato " + s + "!\n" + Constants.ANSI_RESET);
 									flag = true;
 									break;
 								}
@@ -191,7 +180,7 @@ public class ATM implements Visitor<Object> {
 						boolean flag = false;
 						System.out.println(Constants.ANSI_GREEN + "\nSelezionare il conto: ");
 						String opzValide[] = new String[utente.getConti().size() + 1];
-						for(int i = 0; i<utente.getConti().size(); i++) {
+						for (int i = 0; i < utente.getConti().size(); i++) {
 							System.out.println(utente.getConti().get(i).toString());
 							opzValide[i] = String.valueOf(utente.getConti().get(i).getId());
 						}
@@ -238,7 +227,7 @@ public class ATM implements Visitor<Object> {
 											.addTransaction(new Transaction(utente.getConto(accountNumber),
 													utente.getConto(accountNumber), value, my_bank));
 									System.out.println(Constants.ANSI_GREEN + "\nHai depositato " + value + "!"
-											+ Constants.ANSI_RESET+"\n");
+											+ Constants.ANSI_RESET + "\n");
 									flag = true; // flag usato per determinare se l'operazione è andata a buon fine
 									break;
 								}
@@ -255,7 +244,7 @@ public class ATM implements Visitor<Object> {
 						boolean flag = false; // flag usato per deteminare se l'operazione è andata a buon fine
 						System.out.println(Constants.ANSI_PURPLE + "\nSelezionare il conto di origine: ");
 						String opzValide[] = new String[utente.getConti().size() + 1]; // +1 per l'opzione zero
-						for(int i = 0; i<utente.getConti().size(); i++) {
+						for (int i = 0; i < utente.getConti().size(); i++) {
 							System.out.println(utente.getConti().get(i).toString());
 							opzValide[i] = String.valueOf(utente.getConti().get(i).getId());
 						}
@@ -306,16 +295,13 @@ public class ATM implements Visitor<Object> {
 										} else {
 											// Eseguo il bonifico
 											my_bank.getSingleConto(accountNumber).balance -= importo;
-											my_bank.getSingleConto(Integer.parseInt(s) - 1).balance += importo;
+											my_bank.getSingleConto(Integer.parseInt(s)).balance += importo;
 											my_bank.findOwnerGivenAccount(conto).addTransaction(new Transaction(
 													my_bank.getSingleConto(accountNumber),
-													my_bank.getSingleConto(Integer.parseInt(s) - 1), importo, my_bank));
+													my_bank.getSingleConto(Integer.parseInt(s)), importo, my_bank));
 											System.out.println("Bonifico da " + utente.getName() + " a "
-													+ my_bank.getCustomers()
-															.get(my_bank.getSingleConto(Integer.parseInt(s) - 1).getId()
-																	- 1)
-															.getName()
-													+ " di importo " + importo + " effettuato!");
+													+ my_bank.findOwnerGivenAccount(my_bank.getSingleConto(Integer.parseInt(s))).getName() + " di importo "
+													+ importo + " effettuato!");
 											flag = true;
 											break;
 										}
@@ -339,7 +325,7 @@ public class ATM implements Visitor<Object> {
 						DepositAccount temp = new DepositAccount(my_bank);
 						utente.addConto(temp);
 						System.out.println("Il nuovo conto è stato aperto!");
-						System.out.println("Il tasso di interesse è " + (Double) temp.accept(new ATM()) * 100
+						System.out.println("Il tasso di interesse è " + (temp.getBalance()) * 100
 								+ "% lordo" + Constants.ANSI_RESET);
 					} else {
 						System.out.println(
@@ -348,15 +334,15 @@ public class ATM implements Visitor<Object> {
 					break;
 				}
 				case "5": {
-					System.out.println(Constants.ANSI_YELLOW+"-----" + my_bank.nome + "-----");
+					System.out.println(Constants.ANSI_YELLOW + "-----" + my_bank.nome + "-----");
 					System.out.println("Profilo di " + utente.getName() + " " + utente.getSurname());
 					System.out.println("Conti attualmente aperti: ");
-					for(Account a : utente.getConti()) {
+					for (Account a : utente.getConti()) {
 						System.out.println(a.toString());
 					}
 					System.out.print("Totale somme depositate: ");
 					double somma = 0.0;
-					for(Account a : utente.getConti()) {
+					for (Account a : utente.getConti()) {
 						somma += (Double) a.accept(new ATM());
 					}
 					System.out.println(somma + "!" + Constants.ANSI_RESET);
@@ -379,8 +365,7 @@ public class ATM implements Visitor<Object> {
 						System.out.println("...");
 						Thread.sleep(1000);
 						System.out.println("Arrivederci");
-					}
-					else {
+					} else {
 						System.out.println("Valore errato. Uscita...");
 						Thread.sleep(1000);
 						System.out.println("Arrivederci");
