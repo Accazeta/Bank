@@ -11,5 +11,5 @@ public class Constants {
 	public static final String ANSI_CYAN = "\u001B[36m";
 	public static final String ANSI_WHITE = "\u001B[37m";
 	public static final String ANSI_PINK = "\u001b[38;5;218m";
-	public static final String ANSI_GREY= "\u001b[38;5;242m";
+	public static final String ANSI_GREY = "\u001b[38;5;242m";
 }

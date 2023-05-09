@@ -300,8 +300,11 @@ public class ATM implements Visitor<Object> {
 													my_bank.getSingleConto(accountNumber),
 													my_bank.getSingleConto(Integer.parseInt(s)), importo, my_bank));
 											System.out.println("Bonifico da " + utente.getName() + " a "
-													+ my_bank.findOwnerGivenAccount(my_bank.getSingleConto(Integer.parseInt(s))).getName() + " di importo "
-													+ importo + " effettuato!");
+													+ my_bank
+															.findOwnerGivenAccount(
+																	my_bank.getSingleConto(Integer.parseInt(s)))
+															.getName()
+													+ " di importo " + importo + " effettuato!");
 											flag = true;
 											break;
 										}
@@ -325,8 +328,8 @@ public class ATM implements Visitor<Object> {
 						DepositAccount temp = new DepositAccount(my_bank);
 						utente.addConto(temp);
 						System.out.println("Il nuovo conto è stato aperto!");
-						System.out.println("Il tasso di interesse è " + (temp.getBalance()) * 100
-								+ "% lordo" + Constants.ANSI_RESET);
+						System.out.println("Il tasso di interesse è " + (temp.getBalance()) * 100 + "% lordo"
+								+ Constants.ANSI_RESET);
 					} else {
 						System.out.println(
 								Constants.ANSI_RED + "Nessun conto deposito è stato aperto" + Constants.ANSI_RESET);

@@ -1,26 +1,27 @@
 package bank;
 
-public class DepositAccount extends Account{
+public class DepositAccount extends Account {
 	protected double interest;
-	
+
 	public DepositAccount(Bank b) {
 		super(b);
 		this.interest = 0.03;
-		// Non c'è bisogno di aggiungere il conto appena creato alla banca, perchè questa operazione
+		// Non c'è bisogno di aggiungere il conto appena creato alla banca, perchè
+		// questa operazione
 		// avviene invocando super()
 	}
-	
+
 	public DepositAccount(double balance, double interest, Bank b) {
 		super(balance, b);
 		this.interest = interest;
 		b.addConto(this);
 	}
-	
+
 	@Override
 	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
-	
+
 	@Override
 	public double getBalance() {
 		return balance;
@@ -39,11 +40,10 @@ public class DepositAccount extends Account{
 
 	@Override
 	public void setMax_withdrawal(double max_withdrawal) {
-		if(max_withdrawal > (this.getBalance()*0.1)) {
+		if (max_withdrawal > (this.getBalance() * 0.1)) {
 			System.out.println("Max withdrawal to high, maximum value allowed is 10% of the current balance");
 			System.out.println("Max withdrawal not updated");
-		}
-		else {
+		} else {
 			this.max_withdrawal = max_withdrawal;
 		}
 	}
@@ -62,9 +62,7 @@ public class DepositAccount extends Account{
 
 	@Override
 	public String toString() {
-		return "[ " + id + " ] Conto Deposito - saldo = " + balance + ", interesse = " + this.interest*100 + "%";
+		return "[ " + id + " ] Conto Deposito - saldo = " + balance + ", interesse = " + this.interest * 100 + "%";
 	}
-	
-	
-	
+
 }

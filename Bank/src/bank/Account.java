@@ -1,11 +1,11 @@
 package bank;
 
-public class Account extends Bank{
+public class Account extends Bank {
 	public static int a_id = 0;
 	protected final int id;
 	protected double balance;
 	protected double max_withdrawal;
-	
+
 	public Account(Bank b) {
 		super();
 		this.id = ++a_id;
@@ -13,7 +13,7 @@ public class Account extends Bank{
 		this.max_withdrawal = 1000;
 		b.addConto(this);
 	}
-	
+
 	public Account(double balance, Bank b) {
 		super();
 		this.id = ++a_id;
@@ -21,7 +21,7 @@ public class Account extends Bank{
 		this.max_withdrawal = balance * 0.1;
 		b.addConto(this);
 	}
-	
+
 	@Override
 	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
@@ -41,11 +41,10 @@ public class Account extends Bank{
 	}
 
 	public void setMax_withdrawal(double max_withdrawal) {
-		if(max_withdrawal > (this.getBalance()*0.1)) {
+		if (max_withdrawal > (this.getBalance() * 0.1)) {
 			System.out.println("Max withdrawal too high, maximum value allowed is 10% of the current balance");
 			System.out.println("Max withdrawal not updated");
-		}
-		else {
+		} else {
 			this.max_withdrawal = max_withdrawal;
 		}
 	}
@@ -54,15 +53,13 @@ public class Account extends Bank{
 		return id;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "[ " + id + " ]" + " Conto Corrente - saldo = " + balance;
 	}
-	
+
 	public Boolean equals(Account a) {
 		return (this.id == a.id);
 	}
-	
-	
+
 }
